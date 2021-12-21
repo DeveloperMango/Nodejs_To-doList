@@ -21,7 +21,20 @@ $(document).ready(function () {
 	};
 	
 	get_list();
-	
+
+	/*$('.input').on("keydown",function(key){
+		if(key.keyCode == 13)
+		{
+			$.ajax('/add', {
+				'method': 'POST',
+				'data': {
+					'contents': $('#new_todo').val()
+				},
+				'success': get_list
+			});
+		}
+	});*/
+
 	$('.form-inline button').click(function () {	// 새로운 할 일 추가하기
 		$.ajax('/add', {
 			'method': 'POST',
