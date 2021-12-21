@@ -4,15 +4,14 @@
  */
  var express = require('express');
  var routes = require('./routes');
- var todo = require('./routes/todo'); 
- var index = require('./routes/index')
+ var todo = require('./routes/todo');
  var path = require('path');
  var stylus = require('stylus');
  var logger = require('morgan');
  var methodOverride = require('method-override');
  var bodyParser = require('body-parser');
  var errorHandler = require('errorhandler');
- var cookie = require('cookie-parser');
+ var cookieParser = require('cookie-parser');
  
  var app = express();
 
@@ -30,15 +29,17 @@
  // 정적 리소스 처리
  app.use(stylus.middleware(__dirname + '/public'));
  app.use(express.static(path.join(__dirname, 'public')));
- app.use(express.static(__dirname + '/public/stylesheets'));
- app.use(express.static(__dirname + '/public/javascripts'));
- 
+ app.use(express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js')));
+ app.use(express.static(path.join(__dirname, '/node_modules/jquery/dist')));
+ app.use(express.static(path.join(__dirname, '/node_modules/bootstrap/dist/css')));
+ app.use(express.static(path.join(__dirname, '/stylesheets')));
+ app.use(express.static(path.join(__dirname, '/javascripts')));
  // error handling middleware should be loaded after the loading the routes
  if ('development' == app.get('env')) {
   app.use(errorHandler());
  }
 
- app.get('/', index);
+ app.get('/', routes.index);
  app.get('/list', todo.list);
  app.post('/add', todo.add);
  app.post('/complete', todo.complete);
