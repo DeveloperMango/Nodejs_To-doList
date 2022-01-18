@@ -8,6 +8,7 @@
 4. 표와 관련된 다른 라이브러리 적용하기 (예시: jQuery DataTables) 
 5. UI를 더 예쁘게 꾸며보기 
 6. 할 일 목록을 데이터베이스에 저장하기 (예시: MongoDB)
+7. 취소버튼 만들기
  */
 
 var fs = require('fs');	// 파일 시스템 모듈
@@ -81,3 +82,18 @@ exports.del = function(req, res){	// 선택한 ToDo 항목 삭제하기
 		});
 	});
 };
+
+exports.cancel = function(req,res){
+	fs.readFile('./todo_list.json',{
+		'encoding': 'utf8'
+	}, function (err, data) {
+		data = JSON.parse(data);
+		
+		data.list[req.body.index].complete = false;
+		data.list[req.body.index].cancel = true;	
+		fs.writeFile('./todo_list.json', JSON.stringify(data), function (err) {
+			res.json(true);
+		});
+
+	});
+}

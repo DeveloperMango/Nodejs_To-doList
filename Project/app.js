@@ -44,6 +44,7 @@
  app.post('/add', todo.add);
  app.post('/complete', todo.complete);
  app.post('/del', todo.del);
+ app.post('/cancel',todo.cancel);
  
  const port = process.env.PORT || 3000
  app.listen(port, () => {

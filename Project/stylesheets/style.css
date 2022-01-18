@@ -9,4 +9,8 @@ body {
   .complete {
       text-decoration: line-through;
   }
+
+  .cancel {
+      text-decoration: none ;
+  }
   

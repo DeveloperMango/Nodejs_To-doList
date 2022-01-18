@@ -12,28 +12,15 @@ $(document).ready(function () {
 								'<td class="' + (list[i].complete ? 'complete' : '') + '">' + list[i].contents + '</td>' +	// 취소선 클래스
 								'<td><button type="button" class="btn btn-success">완료</button></td>' + 
 								'<td><button type="button" class="btn btn-danger">삭제</button></td>' + 
+								'<td><button type="button" class="btn btn-cancel">취소</button></td>' +
 							'</tr>';
 				}
-
 				$('tbody').html(trs);
 			}
 		});
 	};
 	
 	get_list();
-
-	/*$('.input').on("keydown",function(key){
-		if(key.keyCode == 13)
-		{
-			$.ajax('/add', {
-				'method': 'POST',
-				'data': {
-					'contents': $('#new_todo').val()
-				},
-				'success': get_list
-			});
-		}
-	});*/
 
 	$('.form-inline button').click(function () {	// 새로운 할 일 추가하기
 		$.ajax('/add', {
@@ -63,5 +50,29 @@ $(document).ready(function () {
 			},
 			'success': get_list
 		});
+	});
+
+
+	$('tbody').on('click', '.btn-cancel', function () {	// 선택한 할 일 완료하기
+		$.ajax('/cancel', {
+			'method': 'POST',
+			'data': {	
+			},
+			'success': get_list
+		});
+	});
+
+
+	//새로운 할 일을 추가할 때, 엔터 키를 입력하여 추가하기 
+	$('.form-control').keydown(function(event){
+		if (event.keyCode == '13') {
+			$.ajax('/add', {
+				'method': 'POST',
+				'data': {
+					'contents': $('#new_todo').val()
+				},
+				'success': get_list
+			});
+		  }
 	});
 });
