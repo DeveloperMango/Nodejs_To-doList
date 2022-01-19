@@ -57,6 +57,7 @@ $(document).ready(function () {
 		$.ajax('/cancel', {
 			'method': 'POST',
 			'data': {	
+				'index': parseInt($(this).parent().siblings(':first').text()) - 1	// 선택한 행의 인덱스
 			},
 			'success': get_list
 		});

@@ -2,15 +2,16 @@
 /*
  * GET todo
 - ToDo 목록 만들기 예제에 다양한 기능을 넣어보세요. -
-1. 새로운 할 일을 추가할 때, 엔터 키를 입력하여 추가하기 
+1. (완) 새로운 할 일을 추가할 때, 엔터 키를 입력하여 추가하기 
 2. 완료된 할 일은 아래로 정렬하기
-3. 여러 할 일을 한 번에 처리하기
-4. 표와 관련된 다른 라이브러리 적용하기 (예시: jQuery DataTables) 
-5. UI를 더 예쁘게 꾸며보기 
+3. 세부정보/일정 입력
+4. 체크박스 만들기
+5. UI와 표 관련된 다른 라이브러리 적용하기 (예시: jQuery DataTables) 
 6. 할 일 목록을 데이터베이스에 저장하기 (예시: MongoDB)
-7. 취소버튼 만들기
+7. (완) 취소버튼 만들기
  */
 
+const { Console } = require('console');
 var fs = require('fs');	// 파일 시스템 모듈
 
 exports.list = function(req, res){	// ToDo 목록 가져오기
@@ -59,8 +60,12 @@ exports.complete = function(req, res){	// 선택한 ToDo 항목 완료하기
 		'encoding': 'utf8'
 	}, function (err, data) {
 		data = JSON.parse(data);
-		
+
 		data.list[req.body.index].complete = true;
+
+		data.list.sort(function(a,b){
+		 
+		});
 		
 		fs.writeFile('./todo_list.json', JSON.stringify(data), function (err) {
 			res.json(true);
@@ -74,8 +79,10 @@ exports.del = function(req, res){	// 선택한 ToDo 항목 삭제하기
 	}, function (err, data) {
 		data = JSON.parse(data);
 		
-		data.list[req.body.index] = null;	// 선택한 ToDo 항목 삭제
+		//data.list[req.body.index] = null;	// 선택한 ToDo 항목 삭제
+		console.log(data.list);
 		data.list = data.list.filter(Boolean);	// 유효한 값 추려내기
+		console.log(data.list);
 		
 		fs.writeFile('./todo_list.json', JSON.stringify(data), function (err) {
 			res.json(true);
@@ -83,17 +90,16 @@ exports.del = function(req, res){	// 선택한 ToDo 항목 삭제하기
 	});
 };
 
-exports.cancel = function(req,res){
-	fs.readFile('./todo_list.json',{
+exports.cancel = function(req, res){	// 완료된 ToDo 항목 롤백하기
+	fs.readFile('./todo_list.json', {
 		'encoding': 'utf8'
 	}, function (err, data) {
 		data = JSON.parse(data);
 		
 		data.list[req.body.index].complete = false;
-		data.list[req.body.index].cancel = true;	
+		
 		fs.writeFile('./todo_list.json', JSON.stringify(data), function (err) {
 			res.json(true);
 		});
-
 	});
-}
+};
